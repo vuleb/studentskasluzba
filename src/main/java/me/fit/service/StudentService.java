@@ -29,6 +29,14 @@ public class StudentService {
 
 		return em.merge(s);
 	}
+	
+	@Transactional
+	public Student deleteStudent (Student s) {
+	
+		em.remove(em.contains(s) ? s : em.merge(s));
+		return s;
+		
+	}
 
 	@Transactional
 	public List<Student> getAllStudents() {

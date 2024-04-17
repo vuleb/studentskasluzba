@@ -39,6 +39,17 @@ public class StudentRest {
 		return Response.ok().entity(s).build();
 	}
 	
+	@POST
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Path("/deleteStudent")
+	@Operation(summary = "Web servis koji brise studenta po IDu.", 
+	description = "Morate unijeti ID studenta.")
+	public Response deleteStudent(Student student){
+		
+		studentService.deleteStudent(student);
+		return Response.ok().entity(student).build();
+	}
+	
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	@Path("/getAllStudents")
