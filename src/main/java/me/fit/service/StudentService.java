@@ -9,6 +9,8 @@ import jakarta.persistence.EntityManager;
 import jakarta.transaction.Transactional;
 import me.fit.exception.StudentException;
 import me.fit.exception.StudentStatus;
+import me.fit.model.IPlog;
+import me.fit.model.Predmet;
 import me.fit.model.Student;
 import me.fit.model.Telefon;
 
@@ -19,7 +21,7 @@ public class StudentService {
 	private EntityManager em;
 
 	@Transactional
-	public Student createStudent(Student s) throws StudentException {
+	public Student createStudent(Student s, IPlog iplog) throws StudentException {
 
 		List<Student> students = getAllStudents();
 
@@ -27,6 +29,7 @@ public class StudentService {
 			throw new StudentException(StudentStatus.EXISTS.getLabel());
 		}
 
+		s.setIplog(iplog);
 		return em.merge(s);
 	}
 	
@@ -36,6 +39,12 @@ public class StudentService {
 		em.remove(em.contains(s) ? s : em.merge(s));
 		return s;
 		
+	}
+	
+	@Transactional
+	public Predmet createPredmet(Predmet p) {
+		
+		return em.merge(p);
 	}
 
 	@Transactional

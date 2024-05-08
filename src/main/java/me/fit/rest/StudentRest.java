@@ -3,6 +3,7 @@ package me.fit.rest;
 import java.util.List;
 
 import org.eclipse.microprofile.openapi.annotations.Operation;
+import org.eclipse.microprofile.rest.client.inject.RestClient;
 import org.jboss.resteasy.reactive.RestResponse.Status;
 
 import jakarta.inject.Inject;
@@ -15,6 +16,8 @@ import jakarta.ws.rs.QueryParam;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import me.fit.exception.StudentException;
+import me.fit.model.IPlog;
+import me.fit.model.Predmet;
 import me.fit.model.Student;
 import me.fit.service.StudentService;
 
@@ -23,6 +26,8 @@ public class StudentRest {
 
 	@Inject
 	private StudentService studentService;
+	@RestClient
+	private IpLogRestClient ipLogRestClient;
 
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
@@ -32,7 +37,8 @@ public class StudentRest {
 	public Response createStudent(Student student){
 		Student s = null;
 		try {
-			s = studentService.createStudent(student);
+			IPlog iplog = ipLogRestClient.getAll();
+			s = studentService.createStudent(student, iplog);
 		} catch (StudentException e) {
 			return Response.status(Status.CONFLICT).entity(e.getMessage()).build();
 		}
@@ -49,6 +55,18 @@ public class StudentRest {
 		studentService.deleteStudent(student);
 		return Response.ok().entity(student).build();
 	}
+
+	@POST
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Path("/createPredmet")
+	@Operation(summary = "Web servis koji dodaje novi predmet.", 
+	description = "Za sada nema ogranicenja oko unosa.")
+	public Response createPredmet(Predmet predmet){
+		
+		studentService.createPredmet(predmet);
+		return Response.ok().entity(predmet).build();
+	}
+	
 	
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)

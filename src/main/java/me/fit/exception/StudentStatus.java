@@ -17,5 +17,4 @@ public enum StudentStatus {
 		this.label = label;
 	}
 	
-	
 }

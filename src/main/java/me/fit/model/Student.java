@@ -1,6 +1,7 @@
 package me.fit.model;
 
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Set;
 
 import jakarta.persistence.CascadeType;
@@ -10,9 +11,12 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.NamedQueries;
 import jakarta.persistence.NamedQuery;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
 
 @Entity
 @NamedQueries({ 
@@ -35,6 +39,18 @@ public class Student {
 	private Date datumRodjenja;
 
 	private String jmbg;
+	
+	@ManyToMany(cascade = { CascadeType.ALL })
+    @JoinTable(
+        name = "Raspored", 
+        joinColumns = { @JoinColumn(name = "student_id") }, 
+        inverseJoinColumns = { @JoinColumn(name = "predmet_id")}
+        )
+	
+	private Set<Predmet> predmeti = new HashSet<>();
+	
+	@OneToOne(cascade = CascadeType.ALL)
+	private IPlog iplog;
 
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	@JoinColumn(name = "student_id")
@@ -86,6 +102,15 @@ public class Student {
 
 	public void setJmbg(String jmbg) {
 		this.jmbg = jmbg;
+	}
+
+	
+	public IPlog getIplog() {
+		return iplog;
+	}
+
+	public void setIplog(IPlog iplog) {
+		this.iplog = iplog;
 	}
 
 	@Override
