@@ -52,6 +52,13 @@ public class Predmet {
 		this.dodatniUslov = dodatniUslov;
 	}
 	
+	public Set<Student> getStudenti() {
+		return studenti;
+	}
+	public void setStudenti(Set<Student> studenti) {
+		this.studenti = studenti;
+	}
+	
 	@Override
 	public int hashCode() {
 		final int prime = 31;

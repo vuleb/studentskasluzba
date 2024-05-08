@@ -113,6 +113,14 @@ public class Student {
 		this.iplog = iplog;
 	}
 
+	public Set<Predmet> getPredmeti() {
+		return predmeti;
+	}
+
+	public void setPredmeti(Set<Predmet> predmeti) {
+		this.predmeti = predmeti;
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
